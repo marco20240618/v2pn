@@ -1,0 +1,54 @@
+// ############ for real android build
+
+apply plugin: 'com.android.application'
+android {
+    lintOptions {
+        abortOnError false
+    }
+    compileSdkVersion 29
+//    ndkVersion "23.1.7779620"
+    defaultConfig {
+        applicationId "com.example.v2pn"
+        minSdkVersion 28
+        targetSdkVersion 29
+        versionName "2022-07-18"
+    }
+    buildTypes {
+        release {
+            crunchPngs false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        jniLibs.useLegacyPackaging = true
+    }
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    // implementation 'androidx.appcompat:appcompat:1.3.0'
+    // implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+
+    // 'sucker.jar', 'android.jar' used for vscode edit
+    // android.jar is a modified version of D:\android-sdk\platforms\android-29\android.jar
+    // sucker.jar is a modified version of sucker-arm64.aar
+    // refer unzip.txt, java.txt
+    implementation fileTree('libs/jar')
+    implementation fileTree(dir: 'libs/vpn', include: ['*.aar'], exclude: ['*.jar'])
+}
+
+
+// ############ for vscode code edit
+
+// plugins {
+//     id 'application'
+// }
+// repositories {
+//     mavenCentral()
+// }
+// dependencies {
+//     implementation fileTree('libs')
+// }
+

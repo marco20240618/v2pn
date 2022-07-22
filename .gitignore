@@ -1,0 +1,6 @@
+.idea
+.gradle
+.vscode
+app/build
+app/bin
+#app/libs
