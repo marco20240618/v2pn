@@ -11,7 +11,7 @@ installation:
 
 I'm an android amateur/rookie, only care about usability.
 
-So this app is very simple, only for personal use.
+This app is very simple, only for personal use.
 
 It doesn't have fancy GUI settings.
 
