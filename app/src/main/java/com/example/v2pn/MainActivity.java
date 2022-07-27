@@ -98,7 +98,7 @@ public class MainActivity extends android.app.Activity {
         button_version = new android.widget.Button(this);
         // change version here, because change version in build.gradle is very
         // complicated.
-        button_version.setText("version 2022-07-20");
+        button_version.setText("version 2022-07-27");
         button_version.setBackground(gray_drawable);
         layoutParams.leftMargin = 500;
         layoutParams.topMargin = 100;

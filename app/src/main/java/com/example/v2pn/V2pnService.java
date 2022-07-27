@@ -37,31 +37,65 @@ public class V2pnService extends android.net.VpnService {
                 if ("true".equals(Util.variableRead(this, "globalvpn.txt"))) {
                     builder.addDisallowedApplication("com.example.v2pn");
                     android.util.Log.d("v2pn",
-                            this.getClass().getSimpleName() + "globalvpn is true: " + Util.variableRead(this, "globalvpn.txt"));
+                            this.getClass().getSimpleName() + "globalvpn is true: "
+                                    + Util.variableRead(this, "globalvpn.txt"));
                 } else {
                     addAllowed(builder);
                     android.util.Log.d("v2pn",
-                            this.getClass().getSimpleName() + "globalvpn is false: " + Util.variableRead(this, "globalvpn.txt"));
+                            this.getClass().getSimpleName() + "globalvpn is false: "
+                                    + Util.variableRead(this, "globalvpn.txt"));
                 }
             } catch (Exception e) {
                 addAllowed(builder);
                 android.util.Log.d("v2pn", this.getClass().getSimpleName() + "Exception: " + e.toString());
                 android.util.Log.d("v2pn",
-                        this.getClass().getSimpleName() + "globalvpn is false: " + Util.variableRead(this, "globalvpn.txt"));
+                        this.getClass().getSimpleName() + "globalvpn is false: "
+                                + Util.variableRead(this, "globalvpn.txt"));
             }
             android.util.Log.d("v2pn", getApplicationInfo().nativeLibraryDir + ": "
                     + Util.listFiles(this.getApplicationInfo().nativeLibraryDir));
+
+            android.util.Log.d("v2pn", "change config.json log path");
+            try {
+                // input the original file content to the StringBuffer "input"
+                java.io.BufferedReader file = new java.io.BufferedReader(
+                        new java.io.FileReader(getApplicationInfo().dataDir + "/config.json"));
+                StringBuffer inputBuffer = new StringBuffer();
+                String line;
+                while ((line = file.readLine()) != null) {
+                    if (line.trim().equals("\"access\": \"/dev/null\",")) {
+                        line = "\"access\": \"" + getApplicationContext().getExternalFilesDir(null)
+                                + "/v2rayAccessLog.txt" + "\",";
+                    }
+                    if (line.trim().equals("\"error\": \"/dev/null\",")) {
+                        line = "\"error\": \"" + getApplicationContext().getExternalFilesDir(null)
+                                + "/v2rayErrorLog.txt" + "\",";
+                    }
+                    inputBuffer.append(line);
+                    inputBuffer.append('\n');
+                }
+                file.close();
+                // write the new string with the replaced line OVER the same file
+                java.io.FileOutputStream fileOut = new java.io.FileOutputStream(
+                        getApplicationInfo().dataDir + "/config.json");
+                fileOut.write(inputBuffer.toString().getBytes());
+                fileOut.close();
+            } catch (Exception e) {
+                android.util.Log.d("v2pn", "Problem change config.json log path.");
+            }
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         android.util.Log.d("v2pn", "starting v2ray");
-                        java.io.File f = new java.io.File(getApplicationInfo().dataDir + "/" + "config.json");
+                        java.io.File f = new java.io.File(getApplicationInfo().dataDir + "/config.json");
                         if (f.exists() && !f.isDirectory()) {
-                            android.util.Log.d("v2pn", getApplicationInfo().dataDir + "/" + "config.json" + " exists");
+                            android.util.Log.d("v2pn", getApplicationInfo().dataDir + "/config.json" + " exists");
                         }
-                        v2pn.V2pn.v2ray(getApplicationInfo().dataDir + "/" + "config.json");
+                        v2pn.V2pn.v2ray_start(getApplicationInfo().dataDir + "/config.json");
+                        // v2pn(getApplicationInfo().dataDir + "/config.json",
+                        // getApplicationContext().getExternalFilesDir(null) + "/v2rayTestLog.txt");
                     } catch (Exception e) {
                         android.util.Log.d("v2pn", "v2ray Exception: " + e.toString());
                     }
@@ -74,7 +108,8 @@ public class V2pnService extends android.net.VpnService {
                     try {
                         android.util.Log.d("v2pn", "starting tun2socks");
                         android.os.ParcelFileDescriptor mInterface = builder.establish();
-                        v2pn.V2pn.tun2socks("socks5://127.0.0.1:1080", mInterface.getFd());
+                        v2pn.V2pn.tun2socks_start("socks5://127.0.0.1:1080", mInterface.getFd(),
+                                getApplicationContext().getExternalFilesDir(null) + "/t2sLog.txt");
                     } catch (Exception e) {
                         android.util.Log.d("v2pn", "tun2socks Exception: " + e.toString());
                     }
@@ -89,6 +124,10 @@ public class V2pnService extends android.net.VpnService {
         android.widget.Toast.makeText(getApplicationContext(), "Start Service", android.widget.Toast.LENGTH_SHORT)
                 .show();
         return START_STICKY;
+    }
+
+    public static void replaceLines() {
+
     }
 
     public void addAllowed(android.net.VpnService.Builder builder) {
