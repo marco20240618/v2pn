@@ -3,4 +3,4 @@
 .vscode
 app/build
 app/bin
-app/libs
+app/libs/vpn

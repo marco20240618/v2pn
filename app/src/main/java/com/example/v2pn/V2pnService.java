@@ -93,7 +93,7 @@ public class V2pnService extends android.net.VpnService {
                         if (f.exists() && !f.isDirectory()) {
                             android.util.Log.d("v2pn", getApplicationInfo().dataDir + "/config.json" + " exists");
                         }
-                        v2pn.V2pn.v2ray_start(getApplicationInfo().dataDir + "/config.json");
+                        v2pn.V2pn.v2ray_start(getApplicationInfo().dataDir);
                         // v2pn(getApplicationInfo().dataDir + "/config.json",
                         // getApplicationContext().getExternalFilesDir(null) + "/v2rayTestLog.txt");
                     } catch (Exception e) {
@@ -109,7 +109,7 @@ public class V2pnService extends android.net.VpnService {
                         android.util.Log.d("v2pn", "starting tun2socks");
                         android.os.ParcelFileDescriptor mInterface = builder.establish();
                         v2pn.V2pn.tun2socks_start("socks5://127.0.0.1:1080", mInterface.getFd(),
-                                getApplicationContext().getExternalFilesDir(null) + "/t2sLog.txt");
+                                getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
                     } catch (Exception e) {
                         android.util.Log.d("v2pn", "tun2socks Exception: " + e.toString());
                     }

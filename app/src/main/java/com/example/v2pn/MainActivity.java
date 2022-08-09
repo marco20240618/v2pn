@@ -98,7 +98,7 @@ public class MainActivity extends android.app.Activity {
         button_version = new android.widget.Button(this);
         // change version here, because change version in build.gradle is very
         // complicated.
-        button_version.setText("version 2022-07-27");
+        button_version.setText("version 2022-07-28");
         button_version.setBackground(gray_drawable);
         layoutParams.leftMargin = 500;
         layoutParams.topMargin = 100;
@@ -107,12 +107,21 @@ public class MainActivity extends android.app.Activity {
         button_version.setLayoutParams(layoutParams);
         layout.addView(button_version);
 
+        // android.util.Log.d("v2pn", "http server thread started");
+        android.util.Log.d("v2pn", "android.os.Environment.getExternalStorageDirectory() : "
+                + android.os.Environment.getExternalStorageDirectory());
+        android.util.Log.d("v2pn", "getApplicationContext().getExternalFilesDir(null) : "
+                + getApplicationContext().getExternalFilesDir(null));
+        android.util.Log.d("v2pn", "getApplicationContext().getExternalMediaDirs() : "
+                + getApplicationContext().getExternalMediaDirs()[0]);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    new MyHttpd(getApplicationContext()).start(5000, false);
+                    // new MyHttpd(getApplicationContext()).start(5000, false);
                     android.util.Log.d("v2pn", "http server started");
+                    v2pn.V2pn.http_server_start(getApplicationInfo().dataDir,
+                            getApplicationContext().getExternalFilesDir(null).getAbsolutePath());
                 } catch (Exception ignored) {
                 }
             }
@@ -127,14 +136,13 @@ public class MainActivity extends android.app.Activity {
             public void onClick(android.view.View v) {
                 if (button_connect.getText().equals("Connect")) {
                     android.util.Log.d("v2pn", "Connect");
-                    android.content.Intent intent =
-                    android.net.VpnService.prepare(getApplicationContext());
+                    android.content.Intent intent = android.net.VpnService.prepare(getApplicationContext());
                     if (intent != null) {
-                    android.util.Log.d("v2pn", "intent != null");
-                    startActivityForResult(intent, 0);
+                        android.util.Log.d("v2pn", "intent != null");
+                        startActivityForResult(intent, 0);
                     } else {
-                    android.util.Log.d("v2pn", "intent == null");
-                    onActivityResult(0, RESULT_OK, null);
+                        android.util.Log.d("v2pn", "intent == null");
+                        onActivityResult(0, RESULT_OK, null);
                     }
                     android.util.Log.d("v2pn", "running is true");
                     button_connect.setText("Disconnect");
