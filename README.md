@@ -1,7 +1,7 @@
 # v2pn
 v2pn, a very simple but usable Android vpn app based on https://github.com/v2fly/v2ray-core and https://github.com/xjasonlyu/tun2socks
 
-It has http server api with https://github.com/NanoHttpd/nanohttpd
+It has http server api.
 
 ![ba04747e3019293a93883fc5576b1ef](https://user-images.githubusercontent.com/10022333/180441291-a2dd45ee-100f-400d-8aa2-c5376a2ad343.jpg)
 
@@ -12,8 +12,8 @@ It has http server api with https://github.com/NanoHttpd/nanohttpd
 
 installation:
 
-1. use gomobile to generate .aar from https://github.com/garymaxallen/vt
-2. put .aar in app/libs/vpn folder
+1. use gomobile to generate v2pn.aar from https://github.com/garymaxallen/vt
+2. put v2pn.aar in app/libs/vpn folder
 3. gradlew.bat assembleDebug/installDebug
 
 I'm an android amateur/rookie, only care about usability.
@@ -41,4 +41,5 @@ curl http://localhost:8080/v2pn/allowedlist -d "com.termux"
 
 ### set vpn global or not 
 curl http://localhost:8080/v2pn/globalvpn -d "true"
+
 curl http://localhost:8080/v2pn/globalvpn -d "false"
