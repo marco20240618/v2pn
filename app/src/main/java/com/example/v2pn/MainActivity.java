@@ -98,8 +98,14 @@ public class MainActivity extends android.app.Activity {
         button_version = new android.widget.Button(this);
         // change version here, because change version in build.gradle is very
         // complicated.
-        button_version.setText("version 2022-07-28");
+        button_version.setText("version 2022-08-25");
         button_version.setBackground(gray_drawable);
+        button_version.setOnClickListener(new android.view.View.OnClickListener() {
+            public void onClick(android.view.View v) {
+                // for test click
+                Util.saveToMediaStore(getApplicationContext(), "myfile", "fdsafas;fkadfjl;safjasfas;df");
+            }
+        });
         layoutParams.leftMargin = 500;
         layoutParams.topMargin = 100;
         layoutParams.width = 500;
@@ -108,12 +114,6 @@ public class MainActivity extends android.app.Activity {
         layout.addView(button_version);
 
         // android.util.Log.d("v2pn", "http server thread started");
-        android.util.Log.d("v2pn", "android.os.Environment.getExternalStorageDirectory() : "
-                + android.os.Environment.getExternalStorageDirectory());
-        android.util.Log.d("v2pn", "getApplicationContext().getExternalFilesDir(null) : "
-                + getApplicationContext().getExternalFilesDir(null));
-        android.util.Log.d("v2pn", "getApplicationContext().getExternalMediaDirs() : "
-                + getApplicationContext().getExternalMediaDirs()[0]);
         new Thread(new Runnable() {
             @Override
             public void run() {
